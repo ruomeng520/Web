@@ -1,252 +1,407 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>星空</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
+    <title>炫酷静态网页 | 创意展示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // Tailwind 自定义配置
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1',
+                        secondary: '#EC4899',
+                        dark: '#1E293B',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            /* 自定义工具类 */
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .bg-glass {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            }
         }
 
-        body {
-            width: 100%;
-            height: 100vh;
-            /* 背景渐变 */
-            background-image: linear-gradient(-225deg, #231557 0%,
-                    #43107a 29%, #FF1361 100%);
+        /* 全局动画定义 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
 
-        canvas {
-            position: fixed;
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 加载动画 */
+        .loader {
+            height: 3px;
             width: 100%;
-            height: 100%;
+            background: linear-gradient(90deg, #6366F1, #EC4899, #6366F1);
+            background-size: 200% 100%;
+            animation: loading 2s infinite linear;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
+<body class="bg-slate-900 text-white overflow-x-hidden">
+    <!-- 顶部加载条 -->
+    <div class="loader fixed top-0 left-0 z-50"></div>
 
-<body>
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 w-full z-40 bg-glass bg-slate-900/80 border-b border-slate-800">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gradient bg-gradient-to-r from-primary to-secondary">CREATIVE</a>
+            
+            <!-- 桌面导航 -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#hero" class="hover:text-primary transition-colors">首页</a>
+                <a href="#features" class="hover:text-primary transition-colors">特色</a>
+                <a href="#portfolio" class="hover:text-primary transition-colors">作品</a>
+                <a href="#contact" class="hover:text-primary transition-colors">联系</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="md:hidden text-2xl" id="menuBtn">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div class="md:hidden hidden bg-slate-800/95 bg-glass w-full absolute top-full left-0 py-4" id="mobileMenu">
+            <div class="container mx-auto px-4 flex flex-col space-y-4">
+                <a href="#hero" class="py-2 hover:text-primary transition-colors">首页</a>
+                <a href="#features" class="py-2 hover:text-primary transition-colors">特色</a>
+                <a href="#portfolio" class="py-2 hover:text-primary transition-colors">作品</a>
+                <a href="#contact" class="py-2 hover:text-primary transition-colors">联系</a>
+            </div>
+        </div>
+    </nav>
 
-    <canvas></canvas>
+    <!-- 英雄区域 -->
+    <section id="hero" class="min-h-screen flex items-center pt-20 pb-10 px-4">
+        <div class="container mx-auto grid md:grid-cols-2 gap-10 items-center">
+            <div class="animate-fade-in">
+                <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight mb-6">
+                    <span class="text-gradient bg-gradient-to-r from-primary to-secondary">创意设计</span><br>
+                    点亮数字世界
+                </h1>
+                <p class="text-slate-300 text-lg mb-8 max-w-lg">
+                    融合艺术与技术，打造令人惊艳的数字体验。我们专注于创造具有视觉冲击力和用户友好的设计作品。
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#portfolio" class="bg-gradient-to-r from-primary to-secondary px-8 py-3 rounded-full font-medium hover:shadow-lg hover:shadow-primary/20 transition-all">
+                        查看作品
+                    </a>
+                    <a href="#contact" class="border border-slate-700 px-8 py-3 rounded-full font-medium hover:border-primary hover:text-primary transition-all">
+                        联系我们
+                    </a>
+                </div>
+                
+                <!-- 社交图标 -->
+                <div class="mt-10 flex space-x-6">
+                    <a href="#" class="text-slate-400 hover:text-primary text-xl transition-colors"><i class="fa fa-github"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-primary text-xl transition-colors"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-primary text-xl transition-colors"><i class="fa fa-dribbble"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-primary text-xl transition-colors"><i class="fa fa-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <!-- 装饰图形 -->
+            <div class="relative">
+                <div class="absolute -top-10 -left-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-secondary/20 rounded-full blur-3xl"></div>
+                
+                <!-- 主图形 -->
+                <div class="relative animate-float">
+                    <div class="w-full aspect-square max-w-md mx-auto bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
+                        <div class="p-8 h-full flex flex-col justify-between">
+                            <div>
+                                <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl mb-6 flex items-center justify-center">
+                                    <i class="fa fa-bolt text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-2">创新设计</h3>
+                                <p class="text-slate-400">突破常规，创造独特的视觉体验</p>
+                            </div>
+                            <div class="w-full h-1 bg-gradient-to-r from-primary/0 via-primary/80 to-primary/0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</body>
-<script>
+    <!-- 特色区域 -->
+    <section id="features" class="py-20 px-4 bg-slate-800/50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-4">核心<span class="text-gradient bg-gradient-to-r from-primary to-secondary">特色</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">我们专注于打造具有视觉冲击力和卓越用户体验的数字产品</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 特色卡片 1 -->
+                <div class="bg-slate-800/80 rounded-2xl p-8 border border-slate-700 card-hover">
+                    <div class="w-14 h-14 bg-primary/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa fa-paint-brush text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">视觉设计</h3>
+                    <p class="text-slate-400">精美的视觉设计，融合现代美学与品牌特性，打造令人难忘的视觉体验。</p>
+                </div>
+                
+                <!-- 特色卡片 2 -->
+                <div class="bg-slate-800/80 rounded-2xl p-8 border border-slate-700 card-hover">
+                    <div class="w-14 h-14 bg-secondary/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa fa-code text-secondary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">前端开发</h3>
+                    <p class="text-slate-400">高效的代码实现，确保网站性能卓越，交互流畅，适配各种设备和浏览器。</p>
+                </div>
+                
+                <!-- 特色卡片 3 -->
+                <div class="bg-slate-800/80 rounded-2xl p-8 border border-slate-700 card-hover">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fa fa-mobile text-green-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">响应式布局</h3>
+                    <p class="text-slate-400">完美适配移动端、平板和桌面设备，提供一致且出色的用户体验。</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // 定义星星的颜色
-    const STAR_COLOR = '#fff';
-    // 定义星星的大小
-    const STAR_SIZE = 3;
-    // 定义星星的最小缩放比例
-    const STAR_MIN_SCALE = 0.2;
-    // 定义溢出阈值
-    const OVERFLOW_THRESHOLD = 50;
-    // 定义星星的数量
-    const STAR_COUNT = (window.innerWidth + window.innerHeight) / 8;
-    // 获取canvas元素
-    const canvas = document.querySelector('canvas');
-    // 获取canvas的绘图上下文
-    const context = canvas.getContext('2d');
-    // 定义缩放比例
-    let scale = 1; // device pixel ratio
-    // 定义宽度和高度
-    let width;
-    let height;
-    // 定义星星数组
-    let stars = [];
-    // 定义鼠标指针的位置
-    let pointerX;
-    let pointerY;
-    // 定义速度对象
-    let velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.0009 };
-    // 定义触摸输入标志
-    let touchInput = false;
-    // 生成星星
-    generate();
-    // 调整大小
-    resize();
-    // 运行动画
-    step();
-    // 当窗口大小改变时，重新调整大小
-    window.onresize = resize;
-    // 当鼠标在canvas上移动时，更新鼠标指针位置
-    canvas.onmousemove = onMouseMove;
-    // 当触摸屏在canvas上移动时，更新鼠标指针位置
-    canvas.ontouchmove = onTouchMove;
-    // 当触摸屏离开canvas时，更新鼠标指针位置
-    canvas.ontouchend = onMouseLeave;
-    // 当鼠标离开文档时，更新鼠标指针位置
-    document.onmouseleave = onMouseLeave;
-    // 生成星星
-    function generate() {
-        for (let i = 0; i < STAR_COUNT; i++) {
-            stars.push({
-                x: 0,
-                y: 0,
-                z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE),
+    <!-- 作品展示 -->
+    <section id="portfolio" class="py-20 px-4">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-4">精选<span class="text-gradient bg-gradient-to-r from-primary to-secondary">作品</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">探索我们的创意作品，每一个项目都凝聚了我们的心血和创意</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 作品卡片 1 -->
+                <div class="group rounded-2xl overflow-hidden card-hover">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/design1/800/600" alt="设计作品1" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold mb-2">品牌重塑</h3>
+                            <p class="text-slate-300 text-sm">品牌设计 / 视觉识别</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片 2 -->
+                <div class="group rounded-2xl overflow-hidden card-hover">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/design2/800/600" alt="设计作品2" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold mb-2">电商网站</h3>
+                            <p class="text-slate-300 text-sm">UI设计 / 前端开发</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片 3 -->
+                <div class="group rounded-2xl overflow-hidden card-hover">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/design3/800/600" alt="设计作品3" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold mb-2">移动应用</h3>
+                            <p class="text-slate-300 text-sm">APP设计 / 用户体验</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片 4 -->
+                <div class="group rounded-2xl overflow-hidden card-hover">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/design4/800/600" alt="设计作品4" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold mb-2">数据可视化</h3>
+                            <p class="text-slate-300 text-sm">信息设计 / 交互设计</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片 5 -->
+                <div class="group rounded-2xl overflow-hidden card-hover">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/design5/800/600" alt="设计作品5" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold mb-2">响应式网页</h3>
+                            <p class="text-slate-300 text-sm">网页设计 / 响应式开发</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品卡片 6 -->
+                <div class="group rounded-2xl overflow-hidden card-hover">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/seed/design6/800/600" alt="设计作品6" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h3 class="text-xl font-bold mb-2">3D视觉效果</h3>
+                            <p class="text-slate-300 text-sm">3D设计 / 动效设计</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block bg-slate-800 hover:bg-slate-700 px-8 py-3 rounded-full font-medium transition-colors">
+                    查看更多作品 <i class="fa fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系区域 -->
+    <section id="contact" class="py-20 px-4 bg-slate-800/50">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-4">与我们<span class="text-gradient bg-gradient-to-r from-primary to-secondary">联系</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">有任何问题或合作意向，欢迎随时联系我们</p>
+            </div>
+            
+            <div class="max-w-2xl mx-auto bg-slate-900/80 rounded-2xl p-8 border border-slate-700">
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-slate-300 mb-2">姓名</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="您的姓名">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-300 mb-2">邮箱</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="您的邮箱">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-slate-300 mb-2">主题</label>
+                        <input type="text" id="subject" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="消息主题">
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-slate-300 mb-2">留言</label>
+                        <textarea id="message" rows="5" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="请输入您的留言..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary px-6 py-3 rounded-lg font-medium hover:shadow-lg hover:shadow-primary/20 transition-all">
+                        发送消息
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-10 px-4">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold text-gradient bg-gradient-to-r from-primary to-secondary">CREATIVE</a>
+                    <p class="text-slate-400 mt-2">© 2025 创意设计工作室. 保留所有权利</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-slate-400 hover:text-primary transition-colors"><i class="fa fa-github text-xl"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-primary transition-colors"><i class="fa fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-primary transition-colors"><i class="fa fa-dribbble text-xl"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-primary transition-colors"><i class="fa fa-linkedin text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+            
+            // 切换图标
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // 点击导航链接关闭移动端菜单
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('mobileMenu').classList.add('hidden');
+                document.querySelector('#menuBtn i').classList.remove('fa-times');
+                document.querySelector('#menuBtn i').classList.add('fa-bars');
             });
-        }
-    }
-    // 将星星放置到随机位置
-    function placeStar(star) {
-        star.x = Math.random() * width;
-        star.y = Math.random() * height;
-    }
-    // 回收星星并重新放置到新的位置
-    function recycleStar(star) {
-        // 初始化方向为 'z'
-        let direction = 'z';
-        // 获取速度的绝对值
-        let vx = Math.abs(velocity.x);
-        let vy = Math.abs(velocity.y);
-        // 如果速度的绝对值大于1，则根据速度的大小随机确定方向
-        if (vx > 1 || vy > 1) {
-            let axis;
-            // 如果水平速度大于垂直速度，则根据水平速度的比例随机确定水平或垂直方向
-            if (vx > vy) {
-                axis = Math.random() < vx / (vx + vy) ? 'h' : 'v';
-            } else {
-                axis = Math.random() < vy / (vx + vy) ? 'v' : 'h';
-            }
-            // 根据方向确定具体的移动方向
-            if (axis === 'h') {
-                direction = velocity.x > 0 ? 'l' : 'r';
-            } else {
-                direction = velocity.y > 0 ? 't' : 'b';
-            }
-        }
-        // 随机设置星星的缩放比例
-        star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
-        // 根据方向设置星星的位置
-        if (direction === 'z') {
-            // 如果方向为 'z'，则将星星放置在屏幕中心
-            star.z = 0.1;
-            star.x = Math.random() * width;
-            star.y = Math.random() * height;
-        } else if (direction === 'l') {
-            // 如果方向为 'l'，则将星星放置在屏幕左侧
-            star.x = -OVERFLOW_THRESHOLD;
-            star.y = height * Math.random();
-        } else if (direction === 'r') {
-            // 如果方向为 'r'，则将星星放置在屏幕右侧
-            star.x = width + OVERFLOW_THRESHOLD;
-            star.y = height * Math.random();
-        } else if (direction === 't') {
-            // 如果方向为 't'，则将星星放置在屏幕顶部
-            star.x = width * Math.random();
-            star.y = -OVERFLOW_THRESHOLD;
-        } else if (direction === 'b') {
-            // 如果方向为 'b'，则将星星放置在屏幕底部
-            star.x = width * Math.random();
-            star.y = height + OVERFLOW_THRESHOLD;
-        }
-    }
-    // 调整大小
-    function resize() {
-        // 获取设备像素比例
-        scale = window.devicePixelRatio || 1;
-        // 设置画布的宽度和高度
-        width = window.innerWidth * scale;
-        height = window.innerHeight * scale;
-        canvas.width = width;
-        canvas.height = height;
-        // 将所有星星重新放置到屏幕上
-        stars.forEach(placeStar);
-    }
-    // 动画的每一帧
-    function step() {
-        // 清空画布
-        context.clearRect(0, 0, width, height);
-        // 更新星星的位置和速度
-        update();
-        // 绘制星星
-        render();
-        // 请求下一帧动画
-        requestAnimationFrame(step);
-    }
-    // 更新星星的位置和速度
-    function update() {
-        // 缓动速度
-        velocity.tx *= 0.96;
-        velocity.ty *= 0.96;
-        // 更新速度
-        velocity.x += (velocity.tx - velocity.x) * 0.8;
-        velocity.y += (velocity.ty - velocity.y) * 0.8;
-        // 遍历所有星星
-        stars.forEach((star) => {
-            // 根据速度和缩放比例更新星星的位置
-            star.x += velocity.x * star.z;
-            star.y += velocity.y * star.z;
-            // 根据速度和缩放比例更新星星的位置（使星星围绕屏幕中心旋转）
-            star.x += (star.x - width / 2) * velocity.z * star.z;
-            star.y += (star.y - height / 2) * velocity.z * star.z;
-            // 更新星星的缩放比例
-            star.z += velocity.z;
-            // 如果星星超出屏幕范围，则重新放置到屏幕上
-            if (
-                star.x < -OVERFLOW_THRESHOLD ||
-                star.x > width + OVERFLOW_THRESHOLD ||
-                star.y < -OVERFLOW_THRESHOLD ||
-                star.y > height + OVERFLOW_THRESHOLD
-            ) {
-                recycleStar(star);
-            }
         });
-    }
-    // 绘制星星
-    function render() {
-        // 遍历所有星星
-        stars.forEach((star) => {
-            // 设置绘制星星的样式
-            context.beginPath();
-            context.lineCap = 'round';
-            context.lineWidth = STAR_SIZE * star.z * scale;
-            context.globalAlpha = 0.5 + 0.5 * Math.random();
-            context.strokeStyle = STAR_COLOR;
-            // 绘制星星的路径
-            context.beginPath();
-            context.moveTo(star.x, star.y);
-            // 计算星星的尾巴坐标
-            let tailX = velocity.x * 2;
-            let tailY = velocity.y * 2;
-            // 如果尾巴坐标的绝对值小于0.1，则设置为0.5
-            if (Math.abs(tailX) < 0.1) tailX = 0.5;
-            if (Math.abs(tailY) < 0.1) tailY = 0.5;
-            // 绘制星星的尾巴
-            context.lineTo(star.x + tailX, star.y + tailY);
-            context.stroke();
-        });
-    }
-    // 移动鼠标指针
-    function movePointer(x, y) {
-        // 如果之前有记录鼠标指针的位置，则计算鼠标指针的移动距离，并更新速度
-        if (typeof pointerX === 'number' && typeof pointerY === 'number') {
-            let ox = x - pointerX;
-            let oy = y - pointerY;
-            velocity.tx = velocity.tx + (ox / 8) * scale * (touchInput ? 1 : -1);
-            velocity.ty = velocity.ty + (oy / 8) * scale * (touchInput ? 1 : -1);
-        }
-        // 更新鼠标指针的位置
-        pointerX = x;
-        pointerY = y;
-    }
-    // 当鼠标在canvas上移动时的事件处理函数
-    function onMouseMove(event) {
-        touchInput = false;
-        movePointer(event.clientX, event.clientY);
-    }
-    // 当触摸屏在canvas上移动时的事件处理函数
-    function onTouchMove(event) {
-        touchInput = true;
-        movePointer(event.touches[0].clientX, event.touches[0].clientY, true);
-        event.preventDefault();
-    }
-    // 当鼠标离开canvas时的事件处理函数
-    function onMouseLeave() {
-        pointerX = null;
-        pointerY = null;
-    }
-</script>
 
+        // 滚动时导航栏效果
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2');
+                nav.classList.remove('py-4');
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.add('py-4');
+                nav.classList.remove('py-2');
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // 页面加载完成后隐藏加载条
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.querySelector('.loader').style.display = 'none';
+            }, 1000);
+        });
+
+        // 表单提交处理
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('感谢您的留言！我们会尽快回复您。');
+            this.reset();
+        });
+    </script>
+</body>
 </html>
